@@ -6,13 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.dicoding.koniraapp.MainActivity
-import com.dicoding.koniraapp.R
+import com.dicoding.koniraapp.ui.main.MainActivity
 import com.dicoding.koniraapp.databinding.ActivityLoginBinding
 import com.dicoding.koniraapp.helper.ViewModelFactory
 import com.dicoding.koniraapp.pref.UserModel

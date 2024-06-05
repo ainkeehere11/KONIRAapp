@@ -1,4 +1,4 @@
-package com.dicoding.koniraapp
+package com.dicoding.koniraapp.ui.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
