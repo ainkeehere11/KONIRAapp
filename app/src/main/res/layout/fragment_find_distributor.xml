@@ -5,7 +5,7 @@
     android:background="@color/mainColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.map.FindDistributor">
+    tools:context=".ui.distributor.FindDistributor">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_finddistributor"

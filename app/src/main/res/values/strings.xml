@@ -32,4 +32,7 @@
     <string name="deskripsipabrik">Deskripsi Pabrik</string>
     <string name="lokasi_pabrik">Lokasi Pabrik</string>
     <string name="Find_distributor">Find a distributor</string>
+    <string name="masuka_email">Email</string>
+    <string name="masukan_password">Password</string>
+    <string name="masukan_username">Username</string>
 </resources>

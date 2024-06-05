@@ -1,4 +1,4 @@
-package com.dicoding.koniraapp.ui.map
+package com.dicoding.koniraapp.ui.distributor
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

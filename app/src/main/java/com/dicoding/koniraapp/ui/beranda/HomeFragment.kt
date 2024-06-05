@@ -1,4 +1,4 @@
-package com.dicoding.koniraapp.ui.home
+package com.dicoding.koniraapp.ui.beranda
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
