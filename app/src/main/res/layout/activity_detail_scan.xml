@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.kamera.ActivityDetailScan">
+
+    <!-- Gambar Daun -->
+    <ImageView
+        android:id="@+id/ivGambarDaun"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_launcher_background"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/gambar_daun"/>
+
+    <!-- Nama Daun -->
+    <TextView
+        android:id="@+id/tvpresentase_sakitdaunkopi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Presentase Penyakit Daun"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ivGambarDaun"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp"/>
+
+    <!-- Deskripsi Penyakit Daun -->
+    <TextView
+        android:id="@+id/tvDeskripsiTerserangPenyakit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:text="Deskripsi nama penyakit akan ditampilkan di sini."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvpresentase_sakitdaunkopi" />
+</androidx.constraintlayout.widget.ConstraintLayout>

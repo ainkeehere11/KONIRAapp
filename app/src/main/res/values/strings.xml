@@ -35,4 +35,7 @@
     <string name="masuka_email">Email</string>
     <string name="masukan_password">Password</string>
     <string name="masukan_username">Username</string>
+    <string name="konira">Konira</string>
+    <string name="empty_image_warning">images must not be blank</string>
+    <string name="image_classifier_failed">Image classifier failed to initialize. See eror logs for detail</string>
 </resources>
