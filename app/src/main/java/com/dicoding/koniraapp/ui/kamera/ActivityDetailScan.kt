@@ -1,34 +1,22 @@
 package com.dicoding.koniraapp.ui.kamera
 
-import android.content.Context
-import android.graphics.BitmapFactory
+
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.koniraapp.R
 import com.dicoding.koniraapp.databinding.ActivityDetailScanBinding
-import com.dicoding.koniraapp.helper.ImageClassifierHelper
 import com.dicoding.koniraapp.repo.PredictionRepository
 import com.dicoding.koniraapp.retrofit.api.ApiPredictService
-import com.dicoding.koniraapp.retrofit.response.Data
 import com.dicoding.koniraapp.retrofit.response.PredictResponse
 import com.dicoding.koniraapp.utils.uriToFile
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import org.tensorflow.lite.task.vision.classifier.Classifications
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.InputStream
+
 
 class ActivityDetailScan : AppCompatActivity() {
 
@@ -91,9 +79,11 @@ class ActivityDetailScan : AppCompatActivity() {
     private fun handleSuccess(response: PredictResponse) {
         val data = response.status?.data
         val accuracy = data?.accuracy ?: "No accuracy"
+        val jsonMemberClass = data?.jsonMemberClass ?: "No class"
         val message = response.status?.message ?: "No message"
-        binding.tvpresentaseSakitdaunkopi.text = "Accuracy: $accuracy\nMessage: $message"
+        binding.tvpresentaseSakitdaunkopi.text = "Accuracy: $accuracy\nClass: $jsonMemberClass\nMessage: $message"
     }
+
 
     private fun handleError(errorMessage: String) {
         Log.e(TAG, "Error: $errorMessage")

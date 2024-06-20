@@ -24,7 +24,7 @@
         android:id="@+id/tvpresentase_sakitdaunkopi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Presentase Penyakit Daun"
+        android:text="Presentase, Class, Status Penyakit Daun"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/ivGambarDaun"
@@ -32,16 +32,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp"/>
 
-    <!-- Deskripsi Penyakit Daun -->
-    <TextView
-        android:id="@+id/tvDeskripsiTerserangPenyakit"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="16dp"
-        android:text="Deskripsi nama penyakit akan ditampilkan di sini."
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvpresentase_sakitdaunkopi" />
 </androidx.constraintlayout.widget.ConstraintLayout>
