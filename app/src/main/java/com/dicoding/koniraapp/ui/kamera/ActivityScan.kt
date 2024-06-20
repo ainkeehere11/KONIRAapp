@@ -2,6 +2,7 @@ package com.dicoding.koniraapp.ui.kamera
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -18,6 +19,7 @@ import com.dicoding.koniraapp.databinding.ActivityScanBinding
 import com.dicoding.koniraapp.utils.uriToFile
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.InputStream
 
 class ActivityScan : AppCompatActivity() {
 
@@ -63,8 +65,16 @@ class ActivityScan : AppCompatActivity() {
             binding.previewImageView.setImageBitmap(imageBitmap)
             // Convert bitmap to Uri and save to getFile
             val uri = bitmapToUri(imageBitmap)
-            getFile = uriToFile(uri, this)
+            getFile = getFileFromUri(uri, this)
         }
+    }
+
+    private fun getFileFromUri(uri: Uri, context: Context): File {
+        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "temp_image")
+        inputStream?.copyTo(file.outputStream())
+        inputStream?.close()
+        return file
     }
 
     private fun bitmapToUri(bitmap: Bitmap): Uri {

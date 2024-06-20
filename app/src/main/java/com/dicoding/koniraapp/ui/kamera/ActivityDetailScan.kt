@@ -1,5 +1,6 @@
 package com.dicoding.koniraapp.ui.kamera
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -8,15 +9,31 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.koniraapp.R
 import com.dicoding.koniraapp.databinding.ActivityDetailScanBinding
 import com.dicoding.koniraapp.helper.ImageClassifierHelper
+import com.dicoding.koniraapp.repo.PredictionRepository
+import com.dicoding.koniraapp.retrofit.api.ApiPredictService
+import com.dicoding.koniraapp.retrofit.response.Data
+import com.dicoding.koniraapp.retrofit.response.PredictResponse
+import com.dicoding.koniraapp.utils.uriToFile
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.tensorflow.lite.task.vision.classifier.Classifications
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.io.InputStream
 
 class ActivityDetailScan : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailScanBinding
+    private lateinit var viewModel: PredictionViewModel
 
     companion object {
         const val IMAGE_URI = "img_uri"
@@ -28,45 +45,66 @@ class ActivityDetailScan : AppCompatActivity() {
         binding = ActivityDetailScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize Retrofit and PredictionRepository
+        val apiService = createApiService()
+        val predictionRepository = PredictionRepository(apiService)
+
+        // Use ViewModelProvider with PredictionViewModelFactory
+        val factory = PredictionViewModelFactory(predictionRepository)
+        viewModel = ViewModelProvider(this, factory).get(PredictionViewModel::class.java)
+
         val imageUriString = intent.getStringExtra(IMAGE_URI)
         if (imageUriString != null) {
             val imageUri = Uri.parse(imageUriString)
             displayImage(imageUri)
 
-            val imageClassifierHelper = ImageClassifierHelper(
-                contextValue = this,
-                classifierListenerValue = object : ImageClassifierHelper.ClassifierListener {
-                    override fun onError(errorMessage: String) {
-                        Log.d(TAG, "Error: $errorMessage")
-                    }
-
-                    override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
-                        results?.let { showResults(it) }
-                    }
-                }
+            // Convert Uri to File and send it to ViewModel
+            val file = uriToFile(imageUri, this)
+            Log.d(
+                "ActivityDetailScan","imagefile: ${file.path}"
             )
-            imageClassifierHelper.classifyStaticImage(imageUri)
+
+            val imageFile = file.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "image",
+                file.name,
+                imageFile
+            )
+
+//            val imagePart = MultipartBody.Part.createFormData("image", file.name, RequestBody.create(
+//                "image/*".toMediaTypeOrNull(), file))
+            viewModel.getPrediction(multipartBody, ::handleSuccess, ::handleError)
         } else {
             Log.e(TAG, "No image URI provided")
             finish()
         }
     }
 
+
     private fun displayImage(uri: Uri) {
         Log.d(TAG, "Displaying image: $uri")
         binding.ivGambarDaun.setImageURI(uri)
     }
 
-    private fun showResults(results: List<Classifications>) {
-        val topResult = results.firstOrNull()
-        topResult?.let { result ->
-            val label = result.categories.firstOrNull()?.label ?: ""
-            val score = result.categories.firstOrNull()?.score ?: 0f
-            binding.tvpresentaseSakitdaunkopi.text = "$label ${score.formatToString()}"
-        }
+
+
+    private fun handleSuccess(response: PredictResponse) {
+        val data = response.status?.data
+        val accuracy = data?.accuracy ?: "No accuracy"
+        val message = response.status?.message ?: "No message"
+        binding.tvpresentaseSakitdaunkopi.text = "Accuracy: $accuracy\nMessage: $message"
     }
 
-    private fun Float.formatToString(): String {
-        return String.format("%.2f%%", this * 100)
+    private fun handleError(errorMessage: String) {
+        Log.e(TAG, "Error: $errorMessage")
+    }
+
+    private fun createApiService(): ApiPredictService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api-model-w3senv2swq-uc.a.run.app")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retrofit.create(ApiPredictService::class.java)
     }
 }
